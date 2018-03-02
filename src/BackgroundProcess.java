@@ -17,7 +17,8 @@ public class BackgroundProcess {
     }
 
     public static void main(String[] args) {
-        BackgroundProcess proc = new BackgroundProcess("USB DISK");
+        UserNotification.doLaunch();
+        BackgroundProcess proc = new BackgroundProcess("PATRIOT");
         proc.mainLoop();
     }
 
@@ -27,6 +28,11 @@ public class BackgroundProcess {
         System.out.println("USB Device plugged in: " + device);
         if (device.volumeName.equals(volumeName)) {
             System.out.println("It's a match!");
+            try {
+                UserNotification.go();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
  }
