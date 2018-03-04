@@ -1,0 +1,26 @@
+["Three Logs for the Camera streams of the raspis"]
+type = "Sftp"
+host = "10.10.72.12"
+username="pi"
+password="password"
+files = [
+    "/var/log/streaming-drive.log"
+]
+
+["Seven for the Dashboards in their weird folders"]
+type = "Local"
+files = [
+    "C:/Users/Ryan/Documents/shortcuts.txt"
+]
+
+["Nine for Robot Code doomed to fail"]
+type = "Sftp"
+host = "10.10.72.2"
+username="pi"
+password="password"
+files = [
+    "/i/don't/know"
+]
+
+["One for the Coder on his laptop"]
+name = "log.log"

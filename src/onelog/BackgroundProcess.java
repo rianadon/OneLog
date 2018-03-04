@@ -1,3 +1,5 @@
+package onelog;
+
 /**
  * Example jni operations. Ex passing primitives, arrays, calling methods etc..
  *

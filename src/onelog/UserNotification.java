@@ -1,3 +1,5 @@
+package onelog;
+
 import java.util.concurrent.CountDownLatch;
 import javafx.application.Application;
 import javafx.application.Platform;
