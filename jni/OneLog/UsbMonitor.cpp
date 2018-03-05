@@ -138,15 +138,11 @@ int createWindow() {
 	// without any filtering. Potential optimization could be
 	// obtained via use of filter values if desired.
 
-	while ((retVal = GetMessage(&msg, NULL, 0, 0)) != 0)
-	{
-		if (retVal == -1)
-		{
+	while ((retVal = GetMessage(&msg, NULL, 0, 0)) != 0) {
+		if (retVal == -1) {
 			std::cerr << "Bad retval" << std::endl;
 			break;
-		}
-		else
-		{
+		} else {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}

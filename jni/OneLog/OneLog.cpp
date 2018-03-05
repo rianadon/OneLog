@@ -10,7 +10,7 @@
 JNIEnv *loopEnv;
 jobject loopObj;
 
-JNIEXPORT void JNICALL Java_BackgroundProcess_mainLoop(JNIEnv *env, jobject thisObj) {
+JNIEXPORT void JNICALL Java_onelog_BackgroundProcess_mainLoop(JNIEnv *env, jobject thisObj) {
 	loopEnv = env;
 	loopObj = thisObj;
 	createWindow();
@@ -32,11 +32,19 @@ void setLongField(jclass cls, jobject obj, const char *name, DWORD value) {
 
 jobject createDeviceObject(std::wstring path, std::wstring volumeName, DWORD serialNumber,
                       std::wstring fileSystemName, DWORD maxComponentLen) {
-	jclass deviceClass = loopEnv->FindClass("UsbDevice");
-	if (deviceClass == NULL) return NULL;
+	jclass deviceClass = loopEnv->FindClass("onelog/UsbDevice");
+	if (deviceClass == NULL) {
+		printf("C: Could not find UsbDevice class\n");
+		fflush(stdout);
+		return NULL;
+	}
 	// std::cout << "Got device class" << std::endl;
 	jmethodID deviceConstructor = loopEnv->GetMethodID(deviceClass, "<init>", "()V");
-	if (deviceConstructor == NULL) return NULL;
+	if (deviceConstructor == NULL) {
+		printf("C: Could not find UsbDevice constructor\n");
+		fflush(stdout);
+		return NULL;
+	}
 	// std::cout << "Got device constructor" << std::endl;
 	jobject deviceObj = loopEnv->NewObject(deviceClass, deviceConstructor, loopObj);
 
@@ -61,12 +69,20 @@ void passVolumeToJava(std::wstring path, std::wstring volumeName, DWORD serialNu
                       std::wstring fileSystemName, DWORD maxComponentLen) {
 
 	jobject deviceObj = createDeviceObject(path, volumeName, serialNumber, fileSystemName, maxComponentLen);
-	if (deviceObj == NULL) return;
+	if (deviceObj == NULL) {
+		printf("C: Creating USBDevice failed\n");
+		fflush(stdout);
+		return;
+	}
 
 	jclass javaClass = loopEnv->GetObjectClass(loopObj);
-	jmethodID javaMethod = loopEnv->GetMethodID(javaClass, "handleDevice", "(LUsbDevice;)V");
+	jmethodID javaMethod = loopEnv->GetMethodID(javaClass, "handleDevice", "(Lonelog/UsbDevice;)V");
 
-	if (javaMethod == NULL) return;
+	if (javaMethod == NULL) {
+		printf("C: Could not find handleDevice method\n");
+		fflush(stdout);
+		return;
+	}
 	// std::cout << "Got java method" << std::endl;
 
 	loopEnv->CallVoidMethod(loopObj, javaMethod, deviceObj);
