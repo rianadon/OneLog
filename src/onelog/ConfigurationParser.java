@@ -31,11 +31,11 @@ public class ConfigurationParser {
         }
     }
 
-    public static void main(String[] args) throws ClassNotFoundException {
-        System.out.println("hello");
+    public static List<Downloader> getConfiguration() {
         Toml toml = new Toml().read(new File("logs.toml"));
         boolean errors = false;
         List<Downloader> downloaders = new ArrayList<>();
+
         for (String name : toml.toMap().keySet()) {
             try {
                 Downloader d = downloaderFor(name, toml.getTable(name));
@@ -46,16 +46,22 @@ public class ConfigurationParser {
                 System.out.println("Error: " + e.getMessage());
             }
         }
+
+        if (errors) throw new RuntimeException("Errors exist in configuration.");
+
         downloaders.sort(Comparator.comparingInt((d) -> parseNumber(d.line)));
-        System.out.println(downloaders);
-        if (!errors) {
-            for (Downloader d : downloaders) {
-                System.out.println(d.line);
-                try {
-                    d.download("J:");
-                } catch (Exception e) {
-                    System.out.println(e.toString());
-                }
+        return downloaders;
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException {
+        System.out.println("hello");
+        List<Downloader> downloaders = getConfiguration();
+        for (Downloader d : downloaders) {
+            System.out.println(d.line);
+            try {
+                d.download("E:/logs/");
+            } catch (Exception e) {
+                System.out.println(e.toString());
             }
         }
     }

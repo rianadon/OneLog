@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class Sftp extends Downloader {
 
     private String host;
-    private int port;
+    private Integer port;
     private List<String> files;
     private String username;
     private String password;
