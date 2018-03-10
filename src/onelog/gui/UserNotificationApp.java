@@ -16,7 +16,7 @@ public class UserNotificationApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        // Platform.setImplicitExit(false);
+        Platform.setImplicitExit(false);
 
         latch.countDown();
     }

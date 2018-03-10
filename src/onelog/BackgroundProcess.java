@@ -23,14 +23,6 @@ public class BackgroundProcess {
         this.handler = handler;
     }
 
-    public static void main(String[] args) {
-        UserNotificationApp.doLaunch();
-        BackgroundProcess proc = new BackgroundProcess("PATRIOT", (s) -> {
-            UserNotificationApp.createWindow();
-        });
-        proc.mainLoop();
-    }
-
     public native void mainLoop();
 
     private void handleDevice(UsbDevice device) {

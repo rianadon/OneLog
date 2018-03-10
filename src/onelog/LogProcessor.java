@@ -17,6 +17,8 @@ import onelog.gui.UserNotificationStage;
  */
 public class LogProcessor {
 
+    public static final String LOG_DIRNAME = "logs";
+
     private static List<Downloader> downloaders = ConfigurationParser.getConfiguration();
     private static int progressMax = downloaders.size() + 2;
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH;mm;ss");
@@ -44,8 +46,8 @@ public class LogProcessor {
 
     private Path makeFolder() throws IOException {
         String folderName = dateFormat.format(new Date());
-        Path folderPath = Paths.get(device.path, folderName);
-        Files.createDirectory(folderPath);
+        Path folderPath = Paths.get(device.path, LOG_DIRNAME, folderName);
+        Files.createDirectories(folderPath);
         return folderPath;
     }
 
