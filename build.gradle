@@ -10,6 +10,7 @@ apply plugin: 'application'
 sourceSets {
     main {
         java { srcDir 'src' }
+        resources { srcDir 'resources' }
     }
     test {
         java { srcDir 'test' }
@@ -40,7 +41,7 @@ def slnName = 'OneLog'
 def jniPath = 'jni/x64/Release'
 def jniHeader = "jni/$slnName/${slnName}.h"
 applicationDefaultJvmArgs = ["-Djava.library.path=$jniPath"]
-mainClassName = 'onelog.Main' //'onelog.ConfigurationParser'
+mainClassName = 'onelog.Main'
 targetCompatibility = '1.8'
 
 msbuild {

@@ -1,7 +1,6 @@
 package onelog;
 
 import java.util.function.Consumer;
-import onelog.gui.UserNotificationApp;
 
 /**
  * Example jni operations. Ex passing primitives, arrays, calling methods etc..

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.control.*?>
+<?import onelog.gui.*?>
+
+<Group xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+    <fx:define>
+        <Double fx:id="SCENE_WIDTH" fx:value="650.0" />
+        <Double fx:id="SCENE_HEIGHT" fx:value="100.0" />
+        <Double fx:id="TEXT_MARGIN" fx:value="10.0" />
+        <Double fx:id="PBAR_HEIGHT" fx:value="8.0" />
+        <Double fx:id="ERROR_HEADER_HEIGHT" fx:value="28.0" />
+        <Double fx:id="ERROR_HEIGHT" fx:value="150.0" />
+        <Double fx:id="BUTTON_HEIGHT" fx:value="24.0" />
+        <String fx:id="FONT" fx:value="Consolas" />
+    </fx:define>
+
+    <children>
+        <Label style="-fx-line-spacing: -0.2em;" fx:id="statusText"
+            alignment="CENTER" text="OneLog initializing..." textFill="#ffcc22" wrapText="true"
+            maxWidth="${SCENE_WIDTH - SCENE_HEIGHT - TEXT_MARGIN*2}"
+            layoutX="${100 + TEXT_MARGIN}" prefHeight="${SCENE_HEIGHT - PBAR_HEIGHT}">
+            <font><Font name="$FONT" size="40.0" /></font>
+        </Label>
+        <Rectangle fx:id="progress" fill="#997722" height="$PBAR_HEIGHT" layoutX="0" layoutY="${SCENE_HEIGHT-PBAR_HEIGHT}" width="100" />
+
+        <!-- Error GUI -->
+        <Label text="Errors encountered!" prefWidth="$SCENE_WIDTH" prefHeight="$ERROR_HEADER_HEIGHT" layoutX="0" layoutY="$SCENE_HEIGHT"
+            style="-fx-background-color: #ccaa22;" textFill="#333311">
+            <font><Font name="$FONT" size="16.0" /></font>
+            <padding><Insets left="16" /></padding>
+        </Label>
+
+        <Label fx:id="errors" prefWidth="$SCENE_WIDTH" prefHeight="${ERROR_HEIGHT - ERROR_HEADER_HEIGHT - BUTTON_HEIGHT}" wrapText="true"
+            textFill="#bbbb99" layoutX="0.0" layoutY="${SCENE_HEIGHT + ERROR_HEADER_HEIGHT}" alignment="TOP_LEFT">
+            <font><Font name="$FONT" size="12.0" /></font>
+            <padding><Insets top="4" left="4" bottom="4" right="4" /></padding>
+        </Label>
+
+        <Label layoutX="12.0" layoutY="${SCENE_HEIGHT + ERROR_HEIGHT - BUTTON_HEIGHT}"
+            text="More detailed errors are available in the log." textFill="#999977" prefHeight="$BUTTON_HEIGHT">
+            <font><Font name="$FONT" size="12.0" /></font>
+        </Label>
+
+        <Button fx:id="close" text="Close" layoutX="${SCENE_WIDTH - 52}" layoutY="${SCENE_HEIGHT + ERROR_HEIGHT - BUTTON_HEIGHT}"
+            style="-fx-background-color: #000000;" textFill="#ccccaa" prefHeight="$BUTTON_HEIGHT">
+            <font><Font name="$FONT" size="12.0" /></font>
+        </Button>
+
+        <!-- Animated Graphic -->
+        <SubScene fx:id="subscene" width="$SCENE_HEIGHT" height="$SCENE_HEIGHT-$PBAR_HEIGHT">
+            <root><Group><children>
+                <TorusMesh fx:id="torus" radius="20.0" tubeRadius="3.0" layoutX="${SCENE_HEIGHT / 2}" layoutY="${(SCENE_HEIGHT - PBAR_HEIGHT) / 2}">
+                    <material>
+                        <PhongMaterial diffuseColor="#ffdd66" specularColor="#ffee99" specularPower="0.3" />
+                    </material>
+                </TorusMesh>
+                <PointLight color="#cccccc" translateX="200" translateY="0" translateZ="-400" />
+                <AmbientLight color="#333333" />
+            </children></Group></root>
+        </SubScene>
+    </children>
+</Group>

@@ -21,15 +21,17 @@ public class UserNotificationApp extends Application {
         latch.countDown();
     }
 
-    public static UserNotificationStage makeSecond() {
+    public static UserNotificationStage makeSecond() throws Exception {
         UserNotificationStage secondStage = new UserNotificationStage();
 
         // Display the stage contents
         secondStage.show();
 
         // Position the stage
-        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-        secondStage.setPosition((bounds.getWidth() - secondStage.getWidth()) / 2, 0);
+        Platform.runLater(() -> {
+            Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+            secondStage.setPosition((bounds.getWidth() - secondStage.getWidth()) / 2, 0);
+        });
 
         return secondStage;
     }
@@ -39,8 +41,12 @@ public class UserNotificationApp extends Application {
         AtomicReference<UserNotificationStage> stage = new AtomicReference<>();
 
         Platform.runLater(() -> {
-            stage.set(makeSecond());
-            stageLatch.countDown();
+            try {
+                stage.set(makeSecond());
+                stageLatch.countDown();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
         try {

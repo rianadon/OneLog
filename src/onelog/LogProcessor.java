@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import onelog.downloader.Downloader;
 import onelog.gui.UserNotificationApp;
 import onelog.gui.UserNotificationStage;
@@ -26,6 +27,8 @@ public class LogProcessor {
     private UsbDevice device;
     private UserNotificationStage stage;
 
+    private boolean errored;
+
     public LogProcessor(UsbDevice device) {
         this.device = device;
     }
@@ -40,7 +43,12 @@ public class LogProcessor {
 		} catch (IOException e) {
 			e.printStackTrace();
         } finally {
-            stage.hide();
+            if (errored) {
+                stage.setText("Oops!");
+                stage.stopAnim();
+            } else {
+                stage.hide();
+            }
         }
     }
 
@@ -59,10 +67,16 @@ public class LogProcessor {
             try {
                 d.download(folderPath.toString());
             } catch (Exception e) {
-                System.out.println(e.toString());
+                handleError("[" + i + "] " + e.toString());
             }
             stage.setProgress(i+3, progressMax);
         }
+    }
+
+    private void handleError(String error) {
+        System.out.println(error);
+        stage.addError(error);
+        errored = true;
     }
 
 }
