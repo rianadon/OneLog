@@ -1,8 +1,5 @@
 package onelog.downloader;
 
-import java.lang.reflect.Field;
-import java.util.function.BiConsumer;
-
 import static onelog.Util.*;
 
 /**

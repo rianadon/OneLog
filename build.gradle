@@ -40,7 +40,7 @@ def slnName = 'OneLog'
 def jniPath = 'jni/x64/Release'
 def jniHeader = "jni/$slnName/${slnName}.h"
 applicationDefaultJvmArgs = ["-Djava.library.path=$jniPath"]
-mainClassName = 'onelog.ConfigurationParser'
+mainClassName = 'onelog.Main' //'onelog.ConfigurationParser'
 targetCompatibility = '1.8'
 
 msbuild {

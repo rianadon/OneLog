@@ -14,6 +14,8 @@ import static onelog.Util.*;
  */
 public class ConfigurationParser {
 
+    public static final File LOG_FILE = new File("logs.toml");
+
     private static Downloader downloaderFor(String name, Toml config) {
         String line = unquotify(name);
         int n = parseNumber(line);
@@ -32,7 +34,7 @@ public class ConfigurationParser {
     }
 
     public static List<Downloader> getConfiguration() {
-        Toml toml = new Toml().read(new File("logs.toml"));
+        Toml toml = new Toml().read(LOG_FILE);
         boolean errors = false;
         List<Downloader> downloaders = new ArrayList<>();
 
@@ -54,7 +56,6 @@ public class ConfigurationParser {
     }
 
     public static void main(String[] args) throws ClassNotFoundException {
-        System.out.println("hello");
         List<Downloader> downloaders = getConfiguration();
         for (Downloader d : downloaders) {
             System.out.println(d.line);

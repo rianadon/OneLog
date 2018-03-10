@@ -1,6 +1,7 @@
 package onelog;
 
 import java.util.function.Consumer;
+import onelog.gui.UserNotificationApp;
 
 /**
  * Example jni operations. Ex passing primitives, arrays, calling methods etc..
@@ -19,16 +20,13 @@ public class BackgroundProcess {
 
     public BackgroundProcess(String volumeName, Consumer<UsbDevice> handler) {
         this.volumeName = volumeName;
+        this.handler = handler;
     }
 
     public static void main(String[] args) {
-        UserNotification.doLaunch();
+        UserNotificationApp.doLaunch();
         BackgroundProcess proc = new BackgroundProcess("PATRIOT", (s) -> {
-            try {
-                UserNotification.go();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            UserNotificationApp.createWindow();
         });
         proc.mainLoop();
     }
@@ -39,7 +37,12 @@ public class BackgroundProcess {
         System.out.println("USB Device plugged in: " + device);
         if (device.volumeName.equals(volumeName)) {
             System.out.println("It's a match!");
-            handler.accept(device);
+            try {
+                handler.accept(device);
+            } catch (Exception e) {
+                // If we throw an error here C will get confused, so instead print it
+                e.printStackTrace();
+            }
         }
     }
  }

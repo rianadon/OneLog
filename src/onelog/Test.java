@@ -1,13 +1,17 @@
 package onelog;
 
+import onelog.gui.UserNotificationApp;
+import onelog.gui.UserNotificationStage;
+
 /**
  * Test
  */
 public class Test {
 
     public static void main(String[] args) throws Exception {
-        UserNotification.doLaunch();
-        UserNotification.go();
+        UserNotificationApp.doLaunch();
+        UserNotificationStage stage = UserNotificationApp.createWindow();
+        stage.setText("Three Logs for the Camera streams of the raspis");
         // Thread.sleep(5000);
         // UserNotification.go();
     }
