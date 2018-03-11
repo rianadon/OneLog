@@ -96,7 +96,8 @@ public class ConfigurationParser {
 
         if (errors) throw new RuntimeException("Errors exist in configuration.");
 
-        downloaders.sort(Comparator.comparingInt((d) -> parseNumber(d.line)));
+        downloaders.sort(Comparator.comparingInt((Downloader d) -> parseNumber(d.line))
+          .thenComparing(Comparator.comparing((Downloader d) -> d.line)));
         return config = new Config(downloaders, logConfig);
     }
 }
