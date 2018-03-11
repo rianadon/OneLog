@@ -26,3 +26,4 @@ files = [
 dir = "logs"
 time_format = "yyyy-MM-dd HH;mm;ss"
 app_log = "app.log"
+combined_log = "combined.log"

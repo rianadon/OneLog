@@ -18,6 +18,7 @@ public class ConfigurationParser {
         public String dir;
         public String time_format;
         public String app_log;
+        public String combined_log;
         public String line;
 
         @Override

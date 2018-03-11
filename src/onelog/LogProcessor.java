@@ -130,7 +130,7 @@ public class LogProcessor {
             records[i] = parsers[i].nextRecord();
         }
 
-        FileHandler h = new FileHandler(Paths.get(root, "combined.log").toString(), false);
+        FileHandler h = new FileHandler(Paths.get(root, config.logConfig.combined_log).toString(), false);
         h.setFormatter(new BunyanLogger());
 
         while (true) {
