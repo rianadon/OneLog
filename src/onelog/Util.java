@@ -39,4 +39,26 @@ public class Util {
         }
     }
 
+    public static void validateFields(Object obj) {
+        StringBuilder errors = new StringBuilder();
+        iterateFields(obj, (f, val) -> {
+            if (val == null) {
+                errors.append(" - Field " + f.getName() + " was not initialized.\n");
+            }
+        });
+        if (errors.length() > 0)
+            throw new RuntimeException("Validation errors ocurred in " + obj.getClass().getSimpleName() +
+                                       ":\n" + errors.substring(0, errors.length() - 1));
+    }
+
+    public static String configToString(Object obj) {
+        StringBuilder ret = new StringBuilder(obj.getClass().getSimpleName());
+        ret.append("[");
+        iterateFields(obj, (f, val) -> {
+            ret.append(f.getName() + "=" + val);
+            ret.append(", ");
+        });
+        return ret.substring(0, ret.length() - 2) + "]";
+    }
+
 }

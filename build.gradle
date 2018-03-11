@@ -28,13 +28,9 @@ repositories {
 // In this section you declare the dependencies for your production and test code
 dependencies {
     compile 'com.moandjiezana.toml:toml4j:0.7.2'
+    compile 'org.json:json:20180130'
 
     compile 'com.jcraft:jsch:0.1.54'
-    // Declare the dependency for your favourite test framework you want to use in your tests.
-    // TestNG is also supported by the Gradle Test task. Just change the
-    // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
-    // 'test.useTestNG()' to your build script.
-    // testCompile 'junit:junit:4.12'
 }
 
 def slnName = 'OneLog'

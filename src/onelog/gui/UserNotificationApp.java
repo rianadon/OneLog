@@ -2,7 +2,6 @@ package onelog.gui;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -17,7 +16,6 @@ public class UserNotificationApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Platform.setImplicitExit(false);
-
         latch.countDown();
     }
 

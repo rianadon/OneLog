@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
  */
 public class Sftp extends Downloader {
 
+    private static java.util.logging.Logger logger =
+        java.util.logging.Logger.getLogger(Sftp.class.getName());
+
     private String host;
     private Integer port;
     private List<String> files;
@@ -29,8 +32,10 @@ public class Sftp extends Downloader {
         Channel channel = session.openChannel("sftp");
         channel.connect();
         ChannelSftp sftpChannel = (ChannelSftp) channel;
-        for (String file : files) {
-            sftpChannel.get(file, Paths.get(root, new File(file).getName()).toString());
+        for (String src : files) {
+            String dst = Paths.get(root, new File(src).getName()).toString();
+            logger.fine("Downloading " + src + " to " + dst);
+            sftpChannel.get(src, dst);
         }
         sftpChannel.exit();
         session.disconnect();

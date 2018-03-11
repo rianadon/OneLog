@@ -22,5 +22,7 @@ files = [
     "/i/don't/know"
 ]
 
-["One for the Coder on his laptop"]
-name = "log.log"
+["One for the Coder on the laptop"]
+dir = "logs"
+time_format = "yyyy-MM-dd HH;mm;ss"
+app_log = "app.log"
