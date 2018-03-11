@@ -94,16 +94,4 @@ public class ConfigurationParser {
         downloaders.sort(Comparator.comparingInt((d) -> parseNumber(d.line)));
         return new Config(downloaders, logConfig);
     }
-
-    public static void main(String[] args) throws ClassNotFoundException {
-        Config config = getConfiguration();
-        for (Downloader d : config.downloaders) {
-            System.out.println(d.line);
-            try {
-                d.download("E:/logs/");
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
-    }
 }
