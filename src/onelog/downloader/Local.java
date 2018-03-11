@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Local
@@ -25,6 +26,13 @@ public class Local extends Downloader {
             logger.fine("Copying from " + from + " to " + to);
             Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
         }
-	}
+    }
+
+    @Override
+    public List<Path> exports(String root) {
+        return files.stream().map(f ->
+            Paths.get(root, new File(f).getName())
+        ).collect(Collectors.toList());
+    }
 
 }

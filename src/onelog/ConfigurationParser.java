@@ -18,6 +18,7 @@ public class ConfigurationParser {
         public String dir;
         public String time_format;
         public String app_log;
+        public String line;
 
         @Override
         public String toString() {
@@ -53,14 +54,17 @@ public class ConfigurationParser {
             Downloader down = (Downloader) config.to(c);
             down.line = line;
             validateFields(down);
+            down.getParserConstructor(); // Make sure this runs correctly
             return down;
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Downloader class with name " + tp + " not found");
         }
     }
 
-    private static LogConfig logConfigFor(Toml config) {
+    private static LogConfig logConfigFor(String name, Toml config) {
+        String line = unquotify(name);
         LogConfig lc = config.to(LogConfig.class);
+        lc.line = line;
         validateFields(lc);
         return lc;
     }
@@ -75,7 +79,7 @@ public class ConfigurationParser {
             try {
                 Downloader d = downloaderFor(name, toml.getTable(name));
                 if (d == null)
-                    logConfig = logConfigFor(toml.getTable(name));
+                    logConfig = logConfigFor(name, toml.getTable(name));
                 else
                     downloaders.add(d);
             } catch (RuntimeException e) {
@@ -92,14 +96,13 @@ public class ConfigurationParser {
 
     public static void main(String[] args) throws ClassNotFoundException {
         Config config = getConfiguration();
-        System.out.println(config);
-        // for (Downloader d : config.downloaders) {
-        //     System.out.println(d.line);
-        //     try {
-        //         d.download("E:/logs/");
-        //     } catch (Exception e) {
-        //         System.out.println(e.toString());
-        //     }
-        // }
+        for (Downloader d : config.downloaders) {
+            System.out.println(d.line);
+            try {
+                d.download("E:/logs/");
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
     }
 }

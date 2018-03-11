@@ -2,6 +2,7 @@ package onelog.downloader;
 
 import com.jcraft.jsch.*;
 import java.io.File;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,10 +42,11 @@ public class Sftp extends Downloader {
         session.disconnect();
     }
 
-    public List<String> exports(String root) {
-        return files.stream()
-                    .map((file) -> Paths.get(root, new File(file).getName()).toString())
-                    .collect(Collectors.toList());
+    @Override
+    public List<Path> exports(String root) {
+        return files.stream().map(f ->
+            Paths.get(root, new File(f).getName())
+        ).collect(Collectors.toList());
     }
 
 }
