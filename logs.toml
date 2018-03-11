@@ -23,6 +23,7 @@ files = [
 ]
 
 ["One for the Coder on the laptop"]
+volume = "UsbStick"
 dir = "logs"
 time_format = "yyyy-MM-dd HH;mm;ss"
 app_log = "app.log"

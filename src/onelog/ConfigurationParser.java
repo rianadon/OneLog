@@ -14,7 +14,10 @@ import static onelog.Util.*;
  */
 public class ConfigurationParser {
 
+    private static Config config = null;
+
     public static class LogConfig {
+        public String volume;
         public String dir;
         public String time_format;
         public String app_log;
@@ -71,6 +74,8 @@ public class ConfigurationParser {
     }
 
     public static Config getConfiguration() {
+        if (config != null) return config;
+
         Toml toml = new Toml().read(LOG_FILE);
         boolean errors = false;
         List<Downloader> downloaders = new ArrayList<>();
@@ -92,6 +97,6 @@ public class ConfigurationParser {
         if (errors) throw new RuntimeException("Errors exist in configuration.");
 
         downloaders.sort(Comparator.comparingInt((d) -> parseNumber(d.line)));
-        return new Config(downloaders, logConfig);
+        return config = new Config(downloaders, logConfig);
     }
 }
