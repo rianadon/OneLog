@@ -3,7 +3,9 @@ package onelog.downloader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -12,7 +14,7 @@ import static java.nio.file.Paths.*;
 import com.esotericsoftware.wildcard.Paths;
 
 /**
- * Local
+ * A downloader for files stored on the local computer.
  */
 public class Local extends Downloader {
 
@@ -31,8 +33,24 @@ public class Local extends Downloader {
             return new Paths().addFile(f);
         } else if (split.length == 2) {
             return new Paths().glob(split[0], split[1]);
+        } else if (split.length == 3) {
+            Paths all = new Paths().glob(split[0], split[1]);
+            Integer keep = Integer.parseInt(split[2]);
+            TreeSet<String> under = new TreeSet<>();
+            for (String file : all) {
+                if (under.size() < keep) under.add(file);
+                else if (under.first().compareTo(file) < 0) {
+                    under.pollFirst();
+                    under.add(file);
+                }
+            }
+            Iterator<String> it = all.iterator();
+            while (it.hasNext()) {
+                if (!under.contains(it.next())) it.remove();
+            }
+            return all;
         } else {
-            throw new RuntimeException("Path notation " + split + " is invalid (more than two //)");
+            throw new RuntimeException("Path notation " + split + " is invalid (more than three //)");
         }
     }
 
