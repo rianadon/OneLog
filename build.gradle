@@ -1,5 +1,6 @@
 plugins {
-  id "com.ullink.msbuild" version "2.18"
+  id 'com.ullink.msbuild' version '2.18'
+  id 'com.github.johnrengelman.shadow' version '2.0.2'
 }
 
 // Apply the java plugin to add support for Java
@@ -21,14 +22,15 @@ sourceSets {
 repositories {
     // Use 'jcenter' for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
-    // jcenter()
     mavenCentral()
+    maven { url "https://jitpack.io" }
 }
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
     compile 'com.moandjiezana.toml:toml4j:0.7.2'
     compile 'org.json:json:20180130'
+    compile 'com.github.ToBeKedge:wildcard:master'
 
     compile 'com.jcraft:jsch:0.1.54'
 }
@@ -55,11 +57,14 @@ task generateJniHeaders(type:Exec) {
     dependsOn classes
 }
 
-msbuild.dependsOn generateJniHeaders
-msbuild.inputs.files fileTree("jni/$slnName") {
+
+def buildInputs = fileTree("jni/$slnName") {
     include '*.cpp'
     include '*.h'
 }
+
+msbuild.dependsOn generateJniHeaders
+msbuild.inputs.files buildInputs
 msbuild.outputs.file "$jniPath/${slnName}.dll"
 
 compileJava.finalizedBy msbuild
@@ -68,3 +73,40 @@ eclipse.classpath.file.whenMerged {
     def container = entries.find { it.path.contains 'org.eclipse.jdt.launching.JRE_CONTAINER' }
     container.accessRules << new org.gradle.plugins.ide.eclipse.model.AccessRule("accessible", "javafx/**")
 }
+
+task build32(type: com.ullink.Msbuild) {
+    description 'Executes MSBuild to create a 32 bit binary'
+
+    solutionFile = "jni/${slnName}.sln"
+    configuration = 'Release'
+    platform = 'x86'
+    debugType = 'none'
+    debugSymbols = 'false'
+}
+task copybin32(type: Copy) {
+    from "$buildDir/bin32/${slnName}.dll"
+    into libsDir
+    rename "${slnName}.dll", "${slnName}-32.dll"
+}
+build32.inputs.files buildInputs
+build32.outputs.file "$buildDir/bin32/${slnName}.dll"
+build32.finalizedBy copybin32
+
+task build64(type: com.ullink.Msbuild) {
+    description 'Executes MSBuild to create a 64 bit binary'
+
+    solutionFile = "jni/${slnName}.sln"
+    configuration = 'Release'
+    platform = 'x64'
+}
+task copybin64(type: Copy) {
+    from "$buildDir/bin64/${slnName}.dll"
+    into libsDir
+    rename "${slnName}.dll", "${slnName}-64.dll"
+}
+build64.inputs.files buildInputs
+build64.outputs.file "$buildDir/bin64/${slnName}.dll"
+build64.finalizedBy copybin64
+
+shadowJar.dependsOn build64
+shadowJar.dependsOn build32
