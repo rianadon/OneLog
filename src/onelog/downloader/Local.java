@@ -32,9 +32,9 @@ public class Local extends Downloader {
         if (split.length == 1) {
             return new Paths().addFile(f);
         } else if (split.length == 2) {
-            return new Paths().glob(split[0], split[1]);
+            return new Paths().glob(split[0], split[1]).filesOnly();
         } else if (split.length == 3) {
-            Paths all = new Paths().glob(split[0], split[1]);
+            Paths all = new Paths().glob(split[0], split[1]).filesOnly();
             Integer keep = Integer.parseInt(split[2]);
             TreeSet<String> under = new TreeSet<>();
             for (String file : all) {
