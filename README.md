@@ -1,6 +1,8 @@
 OneLog
 ======
 
+<center><img src="doc/illustration.png" alt="drawing of log transfer"/></center>
+
 > *Three Logs for the Camera streams of the Raspis,*                \
 > &nbsp; *Seven for the Dashboards in their weird folders,*         \
 > *Nine for Robot Code doomed to fail,*                             \
